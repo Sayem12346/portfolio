@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Letter For Min Tanjin 💌</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      min-height: 100vh;
+      background: #f5e6ea;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Lora', Georgia, serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* floating hearts bg */
+    .fh {
+      position: fixed; pointer-events: none; z-index: 0;
+      animation: fhFloat linear infinite; opacity: 0;
+    }
+    @keyframes fhFloat {
+      0%   { transform: translateY(105vh) scale(.5); opacity: 0; }
+      15%  { opacity: .5; }
+      85%  { opacity: .3; }
+      100% { transform: translateY(-8vh) scale(1.1); opacity: 0; }
+    }
+
+    /* burst hearts */
+    .burst { position:fixed; pointer-events:none; z-index:9999; }
+
+    /* ════════ SCENE 1: Envelope closed ════════ */
+    #scene1 {
+      position: relative; z-index: 10;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 18px;
+      animation: fadeUp .8s ease forwards;
+    }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+    .title-text {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.1rem,3vw,1.5rem);
+      color: #4a1020; font-style: italic; letter-spacing: .08em;
+    }
+
+    #envWrap {
+      position: relative;
+      width: min(320px, 88vw);
+    }
+
+    #envSvg {
+      display: block; width: 100%;
+      filter: drop-shadow(0 18px 40px rgba(120,0,20,.4));
+      cursor: pointer;
+      transition: transform .25s, filter .25s;
+    }
+    #envSvg:hover {
+      transform: translateY(-6px) scale(1.02);
+      filter: drop-shadow(0 26px 50px rgba(120,0,20,.5));
+    }
+
+    #seal {
+      position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%,-50%);
+      width: 66px; height: 66px;
+      background: radial-gradient(circle at 38% 32%, #f5d47a 0%, #c9980a 55%, #8a6200 100%);
+      border-radius: 50%;
+      border: 2.5px solid #e8c050;
+      box-shadow: 0 6px 18px rgba(0,0,0,.35), inset 0 1px 3px rgba(255,240,180,.6);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.65rem; cursor: pointer;
+      transition: transform .2s, box-shadow .2s, opacity .4s;
+      z-index: 4;
+    }
+    #seal::before {
+      content:''; position:absolute; inset:5px;
+      border-radius:50%; border:1.5px solid rgba(255,245,200,.5);
+    }
+    #seal:hover { transform: translate(-50%,-50%) scale(1.1) rotate(-5deg); }
+
+    #hint1 { font-size:.85rem; color:#8a4050; font-style:italic; letter-spacing:.04em; }
+
+    /* ════════ SCENE 2: Open envelope + letter peek ════════ */
+    #scene2 {
+      display: none;
+      position: relative; z-index: 10;
+      flex-direction: column; align-items: center; gap: 14px;
+      animation: fadeUp .6s ease forwards;
+    }
+
+    /* Open envelope container — letter rises from inside */
+    #openWrap {
+      position: relative;
+      width: min(320px, 88vw);
+      height: 280px; /* fixed height so letter can rise above */
+    }
+
+    /* The open envelope SVG — bottom half stays fixed */
+    #openEnvSvg {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%;
+      filter: drop-shadow(0 16px 36px rgba(120,0,20,.38));
+    }
+
+    /* Letter peek card — starts inside, rises up on animation */
+    #peekCard {
+      position: absolute;
+      bottom: 55px; /* inside envelope */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      background: #fff9f5;
+      border-radius: 8px 8px 4px 4px;
+      padding: 16px 16px 12px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,.15), 0 6px 18px rgba(0,0,0,.1);
+      border-top: 3px solid #c0152a;
+      cursor: pointer;
+      z-index: 6;
+      animation: peekRise .85s cubic-bezier(.2,.9,.35,1.05) .1s forwards;
+      opacity: 0;
+    }
+    @keyframes peekRise {
+      0%   { transform: translateX(-50%) translateY(30px); opacity: 0; }
+      100% { transform: translateX(-50%) translateY(-110px); opacity: 1; }
+    }
+
+    /* floating hearts beside peek card */
+    .peek-hearts {
+      position: absolute; top: -28px; right: -14px;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 2px;
+    }
+    .peek-hearts span { animation: hb 1.3s ease-in-out infinite; line-height:1; }
+    .peek-hearts span:nth-child(1){ font-size:1.7rem; }
+    .peek-hearts span:nth-child(2){ font-size:1.2rem; animation-delay:.18s; margin-right:5px; }
+    .peek-hearts span:nth-child(3){ font-size:.9rem;  animation-delay:.36s; margin-right:12px; }
+    @keyframes hb { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+    .peek-greeting {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.4rem,5vw,1.8rem);
+      color: #9e1a2a; margin-bottom: 4px;
+    }
+    .peek-sub { font-size:.78rem; color:#666; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+    #hint2 { font-size:.82rem; color:#8a4050; font-style:italic; letter-spacing:.03em; }
+
+    /* ════════ SCENE 3: Full letter ════════ */
+    #scene3 {
+      display: none;
+      position: relative; z-index: 10;
+      flex-direction: column; align-items: center; gap: 0;
+      animation: fadeUp .6s ease forwards;
+    }
+
+    .balloon-row {
+      display: flex; align-items: flex-end; gap: 10px; margin-bottom: -6px;
+      animation: rowFloat 2.4s ease-in-out infinite alternate;
+    }
+    @keyframes rowFloat { from{transform:translateY(0)} to{transform:translateY(-14px)} }
+    .bal { font-size:2.2rem; filter:drop-shadow(0 4px 10px rgba(170,20,40,.25)); animation:balF 2.2s ease-in-out infinite; }
+    .bal:nth-child(1){font-size:2rem; animation-delay:0s;}
+    .bal:nth-child(2){font-size:2.8rem; animation-delay:.25s;}
+    .bal:nth-child(3){font-size:1.8rem; animation-delay:.5s;}
+    .bal:nth-child(4){font-size:2.4rem; animation-delay:.15s;}
+    .bal:nth-child(5){font-size:1.6rem; animation-delay:.4s;}
+    @keyframes balF { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-10px) rotate(2deg)} }
+
+    .letter-card {
+      background: #fff9f5;
+      border-radius: 12px;
+      padding: 26px 24px 22px;
+      width: min(320px, 88vw);
+      box-shadow: 0 12px 44px rgba(140,20,40,.18), 0 2px 8px rgba(0,0,0,.05);
+      text-align: center;
+      border: 1px solid #f8dde4;
+      position: relative; overflow: hidden;
+    }
+    .letter-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:4px;
+      background: linear-gradient(90deg,#8b0000,#c0152a,#e87396,#c0152a,#8b0000);
+    }
+    .lc-greeting {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.6rem,5vw,2.1rem);
+      color: #9e1a2a; margin-bottom: 4px;
+    }
+    .lc-sub {
+      font-size:.88rem; color:#8a4050; font-style:italic;
+      margin-bottom: 16px; padding-bottom: 14px;
+      border-bottom: 1.5px dashed #f5d0da;
+    }
+    .lc-body p {
+      font-size:clamp(.85rem,2.4vw,.94rem);
+      line-height:1.82; color:#2c1a1a;
+      margin-bottom:.8rem; text-align:center;
+    }
+    .lc-body p:last-child { margin-bottom:0; }
+    .lc-sign {
+      margin-top:14px; font-style:italic; font-size:.92rem;
+      color:#8a4050; text-align:right;
+      border-top:1px solid #f5d0da; padding-top:10px;
+    }
+
+    .back-btn {
+      margin-top:16px; background:none;
+      border:1.5px solid #c0152a; color:#c0152a;
+      padding:6px 20px; border-radius:60px;
+      font-family:'Lora',serif; font-style:italic;
+      font-size:.82rem; cursor:pointer; transition:.2s; letter-spacing:.04em;
+    }
+    .back-btn:hover { background:#c0152a; color:#fff; }
+  </style>
+</head>
+<body>
+
+<!-- ══ SCENE 1: Closed envelope ══ -->
+<div id="scene1">
+  <p class="title-text">A Letter For You!</p>
+
+  <div id="envWrap">
+    <svg id="envSvg" viewBox="0 0 320 207" xmlns="http://www.w3.org/2000/svg" onclick="step1()">
+      <defs>
+        <linearGradient id="bs" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="rgba(255,255,255,.07)"/>
+          <stop offset="100%" stop-color="rgba(0,0,0,.13)"/>
+        </linearGradient>
+        <linearGradient id="fs" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="rgba(255,255,255,.13)"/>
+          <stop offset="100%" stop-color="rgba(0,0,0,.09)"/>
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width="320" height="207" rx="6" fill="#c0152a"/>
+      <rect x="0" y="0" width="320" height="207" rx="6" fill="url(#bs)"/>
+      <polygon points="0,207 160,111 0,0"   fill="#a01020"/>
+      <polygon points="320,207 160,111 320,0" fill="#9e1020"/>
+      <polygon points="0,207 320,207 160,111" fill="#b5121e"/>
+      <polygon points="0,0 320,0 160,105" fill="#c8182e"/>
+      <polygon points="0,0 320,0 160,105" fill="url(#fs)"/>
+      <line x1="0"   y1="0"   x2="160" y2="105" stroke="#8b0e1c" stroke-width="1.2" opacity=".5"/>
+      <line x1="320" y1="0"   x2="160" y2="105" stroke="#8b0e1c" stroke-width="1.2" opacity=".5"/>
+      <line x1="0"   y1="207" x2="160" y2="111" stroke="#8b0e1c" stroke-width="1.2" opacity=".4"/>
+      <line x1="320" y1="207" x2="160" y2="111" stroke="#8b0e1c" stroke-width="1.2" opacity=".4"/>
+      <rect x="0" y="0" width="320" height="207" rx="6" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="2"/>
+    </svg>
+    <div id="seal" onclick="step1()">🌸</div>
+  </div>
+
+  <p id="hint1">(tap on the envelope to open)</p>
+</div>
+
+<!-- ══ SCENE 2: Open envelope + letter rises ══ -->
+<div id="scene2">
+  <div id="openWrap">
+    <!-- Peek card rises out -->
+    <div id="peekCard" onclick="step2()">
+      <div class="peek-hearts">
+        <span>❤️</span><span>🩷</span><span>🤍</span>
+      </div>
+      <div class="peek-greeting">Dear Min Tanjin,</div>
+      <div class="peek-sub">There was a misunderstanding between us…</div>
+    </div>
+
+    <!-- Open envelope (bottom) -->
+    <svg id="openEnvSvg" viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="obs" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="rgba(255,255,255,.07)"/>
+          <stop offset="100%" stop-color="rgba(0,0,0,.13)"/>
+        </linearGradient>
+        <linearGradient id="ofu" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stop-color="rgba(255,255,255,.1)"/>
+          <stop offset="100%" stop-color="rgba(0,0,0,.15)"/>
+        </linearGradient>
+      </defs>
+      <!-- envelope body -->
+      <rect x="0" y="40" width="320" height="160" rx="0 0 6 6" fill="#c0152a"/>
+      <rect x="0" y="40" width="320" height="160" rx="0 0 6 6" fill="url(#obs)"/>
+      <!-- side triangles -->
+      <polygon points="0,40  160,140 0,200"   fill="#a01020"/>
+      <polygon points="320,40 160,140 320,200" fill="#9e1020"/>
+      <!-- bottom center -->
+      <polygon points="0,200 320,200 160,140" fill="#b5121e"/>
+      <!-- open flap pointing up -->
+      <polygon points="0,40 320,40 160,0" fill="#8b0e1c"/>
+      <polygon points="0,40 320,40 160,0" fill="url(#ofu)"/>
+      <!-- crease lines -->
+      <line x1="0"   y1="40"  x2="160" y2="140" stroke="#8b0e1c" stroke-width="1" opacity=".4"/>
+      <line x1="320" y1="40"  x2="160" y2="140" stroke="#8b0e1c" stroke-width="1" opacity=".4"/>
+      <line x1="0"   y1="200" x2="160" y2="140" stroke="#8b0e1c" stroke-width="1" opacity=".4"/>
+      <line x1="320" y1="200" x2="160" y2="140" stroke="#8b0e1c" stroke-width="1" opacity=".4"/>
+    </svg>
+  </div>
+
+  <p id="hint2">(click on the letter to read it!)</p>
+</div>
+
+<!-- ══ SCENE 3: Full letter ══ -->
+<div id="scene3">
+  <div class="balloon-row">
+    <span class="bal">🎈</span>
+    <span class="bal">❤️</span>
+    <span class="bal">🎈</span>
+    <span class="bal">❤️</span>
+    <span class="bal">🎈</span>
+  </div>
+  <div class="letter-card">
+    <div class="lc-greeting">Dear Min Tanjin,</div>
+    <div class="lc-sub">— a note for you —</div>
+    <div class="lc-body">
+      <p>Hi,</p>
+      <p>There was a misunderstanding between us, and I feel bad about how things ended up. I'm not here to pressure you or create any discomfort.</p>
+      <p>If you're comfortable, you can unblock me. If not, I will still respect your decision. I just wanted to clear my side.</p>
+      <p>Take care.</p>
+    </div>
+    <div class="lc-sign">— 𝒮𝒶𝓎𝑒𝓂 &nbsp;🙂 </div>
+  </div>
+  <button class="back-btn" onclick="goBack()">← Start Over</button>
+</div>
+
+<script>
+(function(){
+  const s1=document.getElementById('scene1');
+  const s2=document.getElementById('scene2');
+  const s3=document.getElementById('scene3');
+
+  function show(el){
+    [s1,s2,s3].forEach(s=>{ s.style.display='none'; });
+    el.style.display='flex';
+    el.style.flexDirection='column';
+    el.style.alignItems='center';
+    // re-trigger animation
+    el.style.animation='none';
+    void el.offsetWidth;
+    el.style.animation='';
+  }
+
+  window.step1 = function(){
+    burstHearts();
+    show(s2);
+    // re-trigger peek animation
+    const pk = document.getElementById('peekCard');
+    pk.style.animation='none';
+    void pk.offsetWidth;
+    pk.style.animation='peekRise .85s cubic-bezier(.2,.9,.35,1.05) .1s forwards';
+  };
+
+  window.step2 = function(){
+    burstHearts();
+    show(s3);
+  };
+
+  window.goBack = function(){ show(s1); };
+
+  // burst hearts
+  const g=['❤️','💖','💗','🌸','✨','💕','🩷'];
+  function burstHearts(){
+    for(let i=0;i<22;i++){
+      const el=document.createElement('div');
+      el.className='burst';
+      el.textContent=g[Math.floor(Math.random()*g.length)];
+      el.style.cssText=`left:${10+Math.random()*80}%;bottom:${25+Math.random()*30}%;font-size:${14+Math.random()*18}px;transition:transform ${.8+Math.random()*.6}s ease-out,opacity ${.8+Math.random()*.5}s;opacity:.92;`;
+      document.body.appendChild(el);
+      requestAnimationFrame(()=>{
+        el.style.transform=`translateY(-${100+Math.random()*100}px) rotate(${Math.random()*40-20}deg)`;
+        el.style.opacity='0';
+      });
+      setTimeout(()=>el.remove(),1600);
+    }
+  }
+
+  // floating bg hearts
+  const bg=['❤️','💕','🩷','💖','🌸','🌹'];
+  function spawnBg(){
+    const el=document.createElement('div');
+    el.className='fh';
+    el.textContent=bg[Math.floor(Math.random()*bg.length)];
+    el.style.left=Math.random()*100+'vw';
+    el.style.animationDuration=(5+Math.random()*7)+'s';
+    el.style.animationDelay=Math.random()*2+'s';
+    el.style.fontSize=(10+Math.random()*15)+'px';
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),13000);
+  }
+  for(let i=0;i<10;i++) setTimeout(spawnBg, i*300);
+  setInterval(spawnBg,1000);
+
+  show(s1);
+})();
+</script>
+</body>
+</html>
+
