@@ -1,0 +1,99 @@
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 1.6rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all .55s var(--ease);
+}
+
+.navbar.scrolled {
+  background: rgba(5, 9, 15, 0.92);
+  backdrop-filter: blur(32px) saturate(180%);
+  padding: 1rem 4rem;
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 0 60px rgba(201, 149, 76, 0.04);
+}
+
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: .08em;
+  background: linear-gradient(120deg, var(--gold), var(--gold3), var(--white));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 12px rgba(201,149,76,0.3));
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  position: relative;
+  transition: color .3s;
+  cursor: pointer;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 1px;
+  background: linear-gradient(90deg, var(--gold), var(--gold3));
+  box-shadow: 0 0 6px var(--gold);
+  transition: width .4s var(--ease);
+}
+
+.nav-links a:hover { color: var(--gold2); }
+.nav-links a:hover::after { width: 100%; }
+
+.nav-pdf {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .62rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, rgba(201,149,76,0.15), rgba(26,58,110,0.2));
+  border: 1px solid var(--goldline);
+  color: var(--gold2);
+  padding: .55rem 1.5rem;
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(201,149,76,0.08), inset 0 0 20px rgba(201,149,76,0.04);
+  transition: all .35s var(--ease);
+}
+
+.nav-pdf::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -120%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(201,149,76,0.12), transparent);
+  transition: left .6s;
+}
+.nav-pdf:hover::before { left: 120%; }
+.nav-pdf:hover {
+  border-color: var(--gold2);
+  color: var(--white);
+  box-shadow: 0 0 32px var(--goldglow), inset 0 0 24px rgba(201,149,76,0.06);
+}
+
+@media (max-width: 960px) {
+  .navbar { padding: 1.2rem 2rem; }
+  .navbar.scrolled { padding: .9rem 2rem; }
+  .nav-links { display: none; }
+}
